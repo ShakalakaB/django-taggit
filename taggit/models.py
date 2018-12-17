@@ -8,6 +8,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
+#这个段落的作用？
 try:
     from unidecode import unidecode
 except ImportError:
