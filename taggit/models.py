@@ -33,9 +33,13 @@ class TagBase(models.Model):
     class Meta:
         abstract = True
 
+    # save到底是什么原理
     def save(self, *args, **kwargs):
+        #self._state.adding什么意思-- trigger some custom actions only when instance is changed, and skip it when it is initially created
+        #但什么情况会满足下面的if语句
         if self._state.adding and not self.slug:
             self.slug = self.slugify(self.name)
+            #kwargs.get("using") 怎么知道kwargs里一定有"using"
             using = kwargs.get("using") or router.db_for_write(
                 type(self), instance=self)
             # Make sure we write to the same db for all attempted writes,
@@ -67,7 +71,7 @@ class TagBase(models.Model):
                 i += 1
         else:
             return super(TagBase, self).save(*args, **kwargs)
-
+    #i是干嘛的
     def slugify(self, tag, i=None):
         slug = slugify(unidecode(tag))
         if i is not None:
